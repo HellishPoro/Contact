@@ -8,7 +8,7 @@ import {
     FETCH_FAVORITES_REQUEST,
     FETCH_FAVORITES_SUCCESS,
     FETCH_FAVORITES_FAILURE
-} from './actionTypes'
+} from './actionsTypes'
 
 import { ContactDto } from '../../types/dto/ContactDto'
 import { GroupContactsDto } from '../../types/dto/GroupContactsDto'

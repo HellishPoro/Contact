@@ -1,7 +1,6 @@
+import { ContactsAction } from 'src/types/ContactsAction';
 import { ContactDto } from '../../types/dto/ContactDto'
 import { GroupContactsDto } from '../../types/dto/GroupContactsDto'
-// import { FavoriteContactsDto } from '../../types/dto/FavoriteContactsDto'
-import { ContactsAction } from '../action/actionTypes';
 
 interface ContactsState {
     contacts: ContactDto[];

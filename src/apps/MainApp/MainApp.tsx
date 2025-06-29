@@ -4,8 +4,10 @@ import {ThemeProvider} from 'react-bootstrap';
 import { Route, Routes} from 'react-router-dom';
 import {Layout} from 'src/components/Layout';
 import {ContactListPage, GroupPage, ContactPage, FavoritListPage, GroupListPage} from 'src/pages';
-import { useAppDispatch } from 'src/store/hooks/hooks';
-import { fetchContacts, fetchFavorites, fetchGroups } from 'src/store/thunks/thunks';
+import { fetchContacts } from 'src/store/thunks/fetchContacts';
+import { fetchGroups } from 'src/store/thunks/fetchGroups';
+import { fetchFavorites } from 'src/store/thunks/fetchFavorites';
+import { useAppDispatch } from 'src/hooks/hooks';
 
 export const MainApp = () => {
   const dispatch = useAppDispatch();

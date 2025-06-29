@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { ContactCard } from 'src/components/ContactCard';
 import { FilterForm, FilterFormValues } from 'src/components/FilterForm';
-import { useAppSelector } from 'src/store/hooks/hooks';
+import { useAppSelector } from 'src/hooks/hooks';
 import { ContactDto } from 'src/types/dto/ContactDto';
 
 

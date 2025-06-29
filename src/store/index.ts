@@ -1,6 +1,6 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import { thunk } from 'redux-thunk';
-import { contactsReducer } from "./reducer/reducer";
+import { contactsReducer } from "./reducers/reducers";
 
 declare global {
   interface Window {
