@@ -1,13 +1,14 @@
-import React, { memo, useState } from 'react';
+import { memo, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { ContactCard } from 'src/components/ContactCard';
 import { FilterForm, FilterFormValues } from 'src/components/FilterForm';
-import { useAppSelector } from 'src/hooks/hooks';
+import { useGetContactsQuery, useGetGroupsQuery } from 'src/store/contactsApi';
 import { ContactDto } from 'src/types/dto/ContactDto';
 
 
 export const ContactListPage = memo(() => {
-  const { contacts, groups, loading } = useAppSelector(state => state.contacts);
+  const { data: contacts = [], isLoading: contactsLoading } = useGetContactsQuery();
+  const { data: groups = [], isLoading: groupsLoading } = useGetGroupsQuery()
   const [filteredContacts, setFilteredContacts] = useState<ContactDto[]>(contacts);
 
   const onSubmit = (fv: Partial<FilterFormValues>) => {
@@ -28,7 +29,7 @@ export const ContactListPage = memo(() => {
     setFilteredContacts(result);
   };
 
-  if (loading) {
+  if (contactsLoading || groupsLoading) {
     return <div>Загрузка...</div>;
   }
 

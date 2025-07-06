@@ -1,25 +1,16 @@
-import { applyMiddleware, combineReducers, compose, createStore } from "redux";
-import { thunk } from 'redux-thunk';
-import { contactsReducer } from "./reducers/reducers";
+import { configureStore } from "@reduxjs/toolkit";
+import { contactsApi } from "./contactsApi";
 
-declare global {
-  interface Window {
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+export const store = configureStore(
+  {
+    reducer: {
+      [contactsApi.reducerPath]: contactsApi.reducer,
+    },
+    devTools: true,
+    middleware: (getDefaultMidleware) =>
+      getDefaultMidleware().concat(contactsApi.middleware),
   }
-}
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-const rootReducer = combineReducers({
-  contacts: contactsReducer
-});
-
-export type RootState = ReturnType<typeof rootReducer>;
-
-export const store = createStore(
-  rootReducer,
-  undefined,
-  composeEnhancers(applyMiddleware(thunk))
 );
 
+export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

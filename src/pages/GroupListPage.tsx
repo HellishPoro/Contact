@@ -1,12 +1,11 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { GroupContactsCard } from 'src/components/GroupContactsCard';
-import { useAppSelector } from 'src/store/hooks/hooks';
+import { useGetGroupsQuery } from 'src/store/contactsApi';
 
 export const GroupListPage = memo(() => {
-  const { groups, loading } = useAppSelector(state => state.contacts);
-
-  if (loading) {
+const {data:  groups = [], isLoading: groupsLoading} = useGetGroupsQuery()
+  if (groupsLoading) {
     return <div>Загрузка...</div>;
   }
 

@@ -1,21 +1,22 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { GroupContactsCard } from 'src/components/GroupContactsCard';
 import { Empty } from 'src/components/Empty';
 import { ContactCard } from 'src/components/ContactCard';
-import { useAppSelector } from 'src/hooks/hooks';
+import { useGetContactsQuery, useGetGroupsQuery } from 'src/store/contactsApi';
 
 export const GroupPage = memo(() => {
   const { groupId } = useParams<{ groupId: string }>();
-  const { contacts, groups, loading } = useAppSelector(state => state.contacts);
-  
+  const { data: contacts = [], isLoading: contactsLoading} = useGetContactsQuery()
+  const { data: groups = [], isLoading: groupsLoading} = useGetGroupsQuery() 
+
   const currentGroup = groups.find(({ id }) => id === groupId);
   const groupContactsList = currentGroup 
     ? contacts.filter(({ id }) => currentGroup.contactIds.includes(id))
     : [];
 
-  if (loading) {
+  if (contactsLoading || groupsLoading) {
     return <div>Загрузка...</div>;
   }
 
