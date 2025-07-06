@@ -1,14 +1,15 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { ContactCard } from 'src/components/ContactCard';
-import { useAppSelector } from 'src/hooks/hooks';
+import { useGetContactsQuery, useGetFavoritesQuery } from 'src/store/contactsApi';
 
 export const FavoritListPage = memo(() => {
-  const { contacts, favorites, loading } = useAppSelector(state => state.contacts);
+  const { data: contacts = [], isLoading: contactsLoading } = useGetContactsQuery();
+  const { data: favorites = [], isLoading: favoritesLoading } = useGetFavoritesQuery()
   const favoriteContacts = contacts.filter(contact => 
     favorites.includes(contact.id) 
   );
-  if (loading) {
+  if (contactsLoading || favoritesLoading) {
     return <div>Загрузка...</div>;
   }
 

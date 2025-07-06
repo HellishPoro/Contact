@@ -3,14 +3,14 @@ import { Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { ContactCard } from 'src/components/ContactCard';
 import { Empty } from 'src/components/Empty';
-import { useAppSelector } from 'src/hooks/hooks';
+import { useGetContactsQuery } from 'src/store/contactsApi';
 
 export const ContactPage: FC = () => {
   const { contactId } = useParams<{ contactId: string }>();
-  const { contacts, loading } = useAppSelector(state => state.contacts);
+  const { data: contacts = [], isLoading: contactsLoading } = useGetContactsQuery();
   const contact = contacts.find(({ id }) => id === contactId);
 
-  if (loading) {
+  if (contactsLoading) {
     return <div>Загрузка...</div>;
   }
 
