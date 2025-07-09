@@ -1,42 +1,34 @@
-import { memo, useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import { useCallback } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { ContactCard } from 'src/components/ContactCard';
 import { FilterForm, FilterFormValues } from 'src/components/FilterForm';
-import { useGetContactsQuery, useGetGroupsQuery } from 'src/store/contactsApi';
-import { ContactDto } from 'src/types/dto/ContactDto';
+import { contactStore } from 'src/store/contactsStore';
 
 
-export const ContactListPage = memo(() => {
-  const { data: contacts = [], isLoading: contactsLoading } = useGetContactsQuery();
-  const { data: groups = [], isLoading: groupsLoading } = useGetGroupsQuery()
-  const [filteredContacts, setFilteredContacts] = useState<ContactDto[]>(contacts);
+export const ContactListPage = observer(() => {
+  const { 
+    groups, 
+    filteredContacts,
+    contactsLoading, 
+    groupsLoading,
+    setFilterParams
+  } = contactStore;
 
-  const onSubmit = (fv: Partial<FilterFormValues>) => {
-    let result = [...contacts];
+  const handleSubmit = useCallback((fv: Partial<FilterFormValues>) => {
+    setFilterParams(fv);
+  }, [setFilterParams]);
 
-    if (fv.name) {
-      const fvName = fv.name.toLowerCase();
-      result = result.filter(({ name }) => name.toLowerCase().includes(fvName));
-    }
-
-    if (fv.groupId) {
-      const group = groups.find(({ id }) => id === fv.groupId);
-      if (group) {
-        result = result.filter(({ id }) => group.contactIds.includes(id));
-      }
-    }
-
-    setFilteredContacts(result);
-  };
-
-  if (contactsLoading || groupsLoading) {
-    return <div>Загрузка...</div>;
-  }
+  if (contactsLoading || groupsLoading) return <div>Загрузка...</div>;
 
   return (
     <Row xxl={1}>
       <Col className="mb-3">
-        <FilterForm groupContactsList={groups} initialValues={{}} onSubmit={onSubmit} />
+        <FilterForm 
+          groupContactsList={groups} 
+          initialValues={{}} 
+          onSubmit={handleSubmit} 
+        />
       </Col>
       <Col>
         <Row xxl={4} className="g-4">

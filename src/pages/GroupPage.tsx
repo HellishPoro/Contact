@@ -1,24 +1,24 @@
-import { memo } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { GroupContactsCard } from 'src/components/GroupContactsCard';
 import { Empty } from 'src/components/Empty';
 import { ContactCard } from 'src/components/ContactCard';
-import { useGetContactsQuery, useGetGroupsQuery } from 'src/store/contactsApi';
+import { contactStore } from 'src/store/contactsStore';
+import { observer } from 'mobx-react-lite';
 
-export const GroupPage = memo(() => {
+export const GroupPage = observer(() => {
   const { groupId } = useParams<{ groupId: string }>();
-  const { data: contacts = [], isLoading: contactsLoading} = useGetContactsQuery()
-  const { data: groups = [], isLoading: groupsLoading} = useGetGroupsQuery() 
+    const { 
+        getGroupContacts, 
+        groupsLoading, 
+        contactsLoading,
+        groups
+    } = contactStore;
 
-  const currentGroup = groups.find(({ id }) => id === groupId);
-  const groupContactsList = currentGroup 
-    ? contacts.filter(({ id }) => currentGroup.contactIds.includes(id))
-    : [];
+    const currentGroup = groups.find(g => g.id === groupId);
+    const groupContactsList = groupId ? getGroupContacts(groupId) : [];
 
-  if (contactsLoading || groupsLoading) {
-    return <div>Загрузка...</div>;
-  }
+    if (groupsLoading || contactsLoading) return <div>Загрузка...</div>;
 
   return (
     <Row className="g-4">

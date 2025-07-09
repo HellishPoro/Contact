@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.scss';
 import { MainApp } from './apps/MainApp';
-import { Provider } from 'react-redux';
-import { store } from './store';
 import { BrowserRouter } from 'react-router-dom';
+import { contactStore } from './store/contactsStore';
+export const StoreContext = createContext(contactStore);
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,10 +13,10 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <StoreContext.Provider value={contactStore}>
       <BrowserRouter>
         <MainApp />
       </BrowserRouter>
-    </Provider>
+      </StoreContext.Provider>
   </React.StrictMode>
 );
