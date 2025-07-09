@@ -1,3 +1,3 @@
 // import {ContactDto} from './ContactDto';
 
-export type FavoriteContactsDto = string;
+export type FavoriteContactsDto = string[];

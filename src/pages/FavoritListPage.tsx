@@ -1,17 +1,16 @@
-import { memo } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Col, Row } from 'react-bootstrap';
 import { ContactCard } from 'src/components/ContactCard';
-import { useGetContactsQuery, useGetFavoritesQuery } from 'src/store/contactsApi';
+import { contactStore } from 'src/store/contactsStore';
 
-export const FavoritListPage = memo(() => {
-  const { data: contacts = [], isLoading: contactsLoading } = useGetContactsQuery();
-  const { data: favorites = [], isLoading: favoritesLoading } = useGetFavoritesQuery()
-  const favoriteContacts = contacts.filter(contact => 
-    favorites.includes(contact.id) 
-  );
-  if (contactsLoading || favoritesLoading) {
-    return <div>Загрузка...</div>;
-  }
+export const FavoritListPage = observer(() => {
+  const { 
+    favoriteContacts, 
+    contactsLoading, 
+    favoritesLoading 
+  } = contactStore;
+
+  if (contactsLoading || favoritesLoading) return <div>Загрузка...</div>;
 
   return (
     <Row xxl={4} className="g-4">
